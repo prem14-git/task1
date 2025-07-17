@@ -30,6 +30,15 @@ app.use(express.json());
 // Routes
 app.use("/api", userRoutes);
 
+
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, "/frontend/task_ui/dist")));
+
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "frontend","task_ui", "dist", "index.html"));
+	});
+}
+
 // Server start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
